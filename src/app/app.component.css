@@ -1,0 +1,11 @@
+.container {
+    width: 100%;
+}
+
+.container-sidenav {
+    width: 20%;
+}
+
+.container-main {
+    width: 80%;
+}
