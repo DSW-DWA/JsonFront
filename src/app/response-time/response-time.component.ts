@@ -2,8 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { MatTableDataSource } from '@angular/material/table';
 import { PageEvent } from '@angular/material/paginator';
+import { TableServiceService } from '../services/table-service.service';
 
-interface ResponseRecord {
+interface ResponseTableItem {
   date: string;
   count: number;
   response_time: number;
@@ -16,14 +17,17 @@ interface ResponseRecord {
 })
 export class ResponseTimeComponent implements OnInit {
   displayedColumns: string[] = ['date', 'count', 'response_time'];
-  dataSource: MatTableDataSource<ResponseRecord>;
+  dataSource: MatTableDataSource<ResponseTableItem>;
   total: number;
-  pageSize: number = 7; // 1 week
+  pageSize: number = 7;
   pageIndex: number = 0;
-  allRecords: ResponseRecord[];
+  allRecords: ResponseTableItem[];
 
-  constructor(private http: HttpClient) {
-    this.dataSource = new MatTableDataSource<ResponseRecord>();
+  constructor(
+    private http: HttpClient,
+    private tableService: TableServiceService
+    ) {
+    this.dataSource = new MatTableDataSource<ResponseTableItem>();
   }
 
   ngOnInit(): void {
@@ -31,10 +35,9 @@ export class ResponseTimeComponent implements OnInit {
   }
 
   fetchData(): void {
-    // Replace the URL with your actual API endpoint
-    this.http.get<any>('https://localhost:7050/Table/ResponseTime')
+    this.tableService.getResponseTime()
       .subscribe(data => {
-        const records: ResponseRecord[] = [];
+        const records: ResponseTableItem[] = [];
         Object.keys(data.records).forEach(date => {
           records.push({
             date,

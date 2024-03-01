@@ -2,8 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { MatTableDataSource } from '@angular/material/table';
 import { PageEvent } from '@angular/material/paginator';
+import { TableServiceService } from '../services/table-service.service';
 
-interface DurationRecord {
+export interface DurationTableItem {
   date: string;
   agents_chatting_duration: number;
   count: number;
@@ -17,14 +18,17 @@ interface DurationRecord {
 })
 export class DurationComponent implements OnInit {
   displayedColumns: string[] = ['date', 'agents_chatting_duration', 'count', 'duration'];
-  dataSource: MatTableDataSource<DurationRecord>;
+  dataSource: MatTableDataSource<DurationTableItem>;
   total: number;
-  pageSize: number = 7; // 1 week
+  pageSize: number = 7;
   pageIndex: number = 0;
-  allRecords: DurationRecord[];
+  allRecords: DurationTableItem[];
 
-  constructor(private http: HttpClient) {
-    this.dataSource = new MatTableDataSource<DurationRecord>();
+  constructor(
+    private http: HttpClient, 
+    private tableService: TableServiceService
+    ) {
+    this.dataSource = new MatTableDataSource<DurationTableItem>();
   }
 
   ngOnInit(): void {
@@ -32,10 +36,9 @@ export class DurationComponent implements OnInit {
   }
 
   fetchData(): void {
-    // Replace the URL with your actual API endpoint
-    this.http.get<any>('https://localhost:7050/Table/Duration')
+    this.tableService.getDuration()
       .subscribe(data => {
-        const records: DurationRecord[] = [];
+        const records: DurationTableItem[] = [];
         Object.keys(data.records).forEach(date => {
           records.push({
             date,

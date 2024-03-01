@@ -2,8 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { MatTableDataSource } from '@angular/material/table';
 import { PageEvent } from '@angular/material/paginator';
+import { TableServiceService } from '../services/table-service.service';
 
-interface RatingsRecord {
+interface RatingTableItem {
   date: string;
   bad: number;
   chats: number;
@@ -17,14 +18,16 @@ interface RatingsRecord {
 })
 export class RatingComponent {
   displayedColumns: string[] = ['date', 'bad', 'chats', 'good'];
-  dataSource: MatTableDataSource<RatingsRecord>;
+  dataSource: MatTableDataSource<RatingTableItem>;
   total: number;
-  pageSize: number = 7; // 1 week
+  pageSize: number = 7;
   pageIndex: number = 0;
-  allRecords: RatingsRecord[];
+  allRecords: RatingTableItem[];
 
-  constructor(private http: HttpClient) {
-    this.dataSource = new MatTableDataSource<RatingsRecord>();
+  constructor(
+    private http: HttpClient,
+    private tableService: TableServiceService) {
+    this.dataSource = new MatTableDataSource<RatingTableItem>();
   }
 
   ngOnInit(): void {
@@ -32,10 +35,9 @@ export class RatingComponent {
   }
 
   fetchData(): void {
-    // Replace the URL with your actual API endpoint
-    this.http.get<any>('https://localhost:7050/Table/Rating')
+    this.tableService.getRating()
       .subscribe(data => {
-        const records: RatingsRecord[] = [];
+        const records: RatingTableItem[] = [];
         Object.keys(data.records).forEach(date => {
           records.push({
             date,

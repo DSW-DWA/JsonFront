@@ -2,8 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { MatTableDataSource } from '@angular/material/table';
 import { PageEvent } from '@angular/material/paginator';
+import { TableServiceService } from '../services/table-service.service';
 
-interface TagsRecord {
+interface TagTableItem {
   date: string;
   tags: string;
 }
@@ -15,14 +16,17 @@ interface TagsRecord {
 export class TagComponent implements OnInit {
   displayedColumns: string[] = ['date', 'tags'];
   uniqueTags: string[] = [];
-  dataSource: MatTableDataSource<TagsRecord>;
+  dataSource: MatTableDataSource<TagTableItem>;
   total: number;
   pageSize: number = 7; // 1 week
   pageIndex: number = 0;
-  allRecords: TagsRecord[];
+  allRecords: TagTableItem[];
 
-  constructor(private http: HttpClient) {
-    this.dataSource = new MatTableDataSource<TagsRecord>();
+  constructor(
+    private http: HttpClient,
+    private tableService: TableServiceService 
+    ) {
+    this.dataSource = new MatTableDataSource<TagTableItem>();
   }
 
   ngOnInit(): void {
@@ -30,16 +34,15 @@ export class TagComponent implements OnInit {
   }
 
   fetchData(): void {
-    // Replace the URL with your actual API endpoint
-    this.http.get<any>('https://localhost:7050/Table/Tag')
+    this.tableService.getTag()
       .subscribe(data => {
-        const records: TagsRecord[] = [];
+        const records: TagTableItem[] = [];
         Object.keys(data.records).forEach(date => {
           let tags = ""
           Object.keys(data.records[date]).forEach(tag => {
             tags = tags + `${tag} - ${data.records[date][tag]}, `
           });
-          tags = tags.slice(0, -1);
+          tags = tags.slice(0, -2);
           records.push({ date, tags });
         });
         this.total = records.length;
