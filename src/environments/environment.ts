@@ -1,4 +1,4 @@
 export const environment = {
     production: true,
-    apiUrl: 'https://andreichupeev.bsite.net/Table'
+    apiUrl: 'http://andreichupeev.back.ru/Table'
 };
