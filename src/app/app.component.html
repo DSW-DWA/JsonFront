@@ -1,14 +1,21 @@
 <mat-drawer-container class="container">
-    <mat-drawer mode="side" opened class="container-sidenav">
+    <mat-drawer #drawer mode="side" [opened]="screenWidth <= 768 ? false : true" class="container-sidenav">
         <mat-nav-list>
-            <a mat-list-item routerLink="/duration">Таблица Duration</a>
-            <a mat-list-item routerLink="/rating">Таблица Rating</a>
-            <a mat-list-item routerLink="/response-time">Таблица ResponseTime</a>
-            <a mat-list-item routerLink="/tag">Таблица Tag</a>
-            <a mat-list-item routerLink="/total-chart">Таблица TotalChart</a>
+            <a mat-list-item routerLink="" (click)="drawer.toggle()">Главная</a>
+            <a mat-list-item routerLink="/duration" (click)="drawer.toggle()">Таблица Duration</a>
+            <a mat-list-item routerLink="/rating" (click)="drawer.toggle()">Таблица Rating</a>
+            <a mat-list-item routerLink="/response-time" (click)="drawer.toggle()">Таблица ResponseTime</a>
+            <a mat-list-item routerLink="/tag" (click)="drawer.toggle()">Таблица Tag</a>
+            <a mat-list-item routerLink="/total-chart" (click)="drawer.toggle()">Таблица TotalChart</a>
           </mat-nav-list>
     </mat-drawer>
     <mat-drawer-content class="container-main">
+        <mat-toolbar *ngIf="screenWidth <= 768">
+            <button mat-icon-button class="example-icon" (click)="drawer.toggle()" aria-label="Example icon-button with menu icon">
+              <mat-icon>menu</mat-icon>
+            </button>
+            <span>My App</span>
+        </mat-toolbar>
         <router-outlet></router-outlet>
     </mat-drawer-content>
 </mat-drawer-container>

@@ -1,5 +1,5 @@
 <!-- ratings-report.component.html -->
-<div class="mat-elevation-z8">
+<div class="mat-elevation-z8 table-wrapping">
     <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
   
       <!-- Date Column -->
@@ -32,4 +32,4 @@
 
     <mat-paginator [length]="total" [pageSize]="pageSize" (page)="onPageChange($event)" showFirstLastButtons></mat-paginator>
   </div>
-  
+  <ng-template #loadBlock><mat-spinner></mat-spinner></ng-template>

@@ -1,26 +1,21 @@
-<!-- duration-report.component.html -->
-<div class="mat-elevation-z8">
+<div *ngIf="dataSource.data.length > 0; else loadBlock" class="mat-elevation-z8 table-wrapping">
     <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
   
-      <!-- Date Column -->
       <ng-container matColumnDef="date">
         <th mat-header-cell *matHeaderCellDef>Date</th>
         <td mat-cell *matCellDef="let element">{{ element.date }}</td>
       </ng-container>
   
-      <!-- Agents Chatting Duration Column -->
       <ng-container matColumnDef="agents_chatting_duration">
         <th mat-header-cell *matHeaderCellDef>Agents Chatting Duration</th>
         <td mat-cell *matCellDef="let element">{{ element.agents_chatting_duration }}</td>
       </ng-container>
   
-      <!-- Count Column -->
       <ng-container matColumnDef="count">
         <th mat-header-cell *matHeaderCellDef>Count</th>
         <td mat-cell *matCellDef="let element">{{ element.count }}</td>
       </ng-container>
   
-      <!-- Duration Column -->
       <ng-container matColumnDef="duration">
         <th mat-header-cell *matHeaderCellDef>Duration</th>
         <td mat-cell *matCellDef="let element">{{ element.duration }}</td>
@@ -30,6 +25,6 @@
       <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
     </table>
 
-    <mat-paginator [length]="total" [pageSize]="pageSize" (page)="onPageChange($event)" showFirstLastButtons></mat-paginator>
-  </div>
-  
+  <mat-paginator [length]="total" [pageSize]="pageSize" (page)="onPageChange($event)" showFirstLastButtons></mat-paginator>
+</div>
+<ng-template #loadBlock><mat-spinner></mat-spinner></ng-template>

@@ -6,6 +6,29 @@ app-root {
   height: 100%;
 }
 
+app-home, app-duration, app-rating, app-response-time, app-tag, app-total-chart {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@media only screen and (max-width: 768px) {
+  app-home, app-duration, app-rating, app-response-time, app-tag, app-total-chart {
+    height: calc(100% - 56px);
+  }
+}
+
+.table-wrapping {
+  width: 100%;
+  height: 100%;
+}
+table {
+  width: 100%;
+  height: calc(100% - 56px);
+}
+
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
